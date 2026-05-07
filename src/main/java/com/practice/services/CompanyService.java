@@ -12,14 +12,18 @@ import org.springframework.stereotype.Service;
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final CompanyMapper companyMapper;
     private static final Logger logger = LoggerFactory.getLogger(CompanyService.class);
 
-    public CompanyService(CompanyRepository companyRepository) {this.companyRepository = companyRepository;}
+    public CompanyService(CompanyRepository companyRepository, CompanyMapper companyMapper) {
+        this.companyRepository = companyRepository;
+        this.companyMapper = companyMapper;
+    }
 
     public CompanyDTO saveCompany(CompanyDTO companyDTO) {
-        Company company = CompanyMapper.toEntity(companyDTO);
+        Company company = companyMapper.toEntity(companyDTO);
         Company saved = companyRepository.save(company);
         logger.info("Company with ID: {} and Name: {} Created Successfully", saved.getId(), saved.getName());
-        return CompanyMapper.toDTO(saved);
+        return companyMapper.toDTO(saved);
     }
 }

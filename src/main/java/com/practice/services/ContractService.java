@@ -19,11 +19,13 @@ public class ContractService {
 
     private final ContractRepository contractRepo;
     private final CompanyRepository companyRepo;
+    private final ContractMapper contractMapper;
     private static final Logger logger = LoggerFactory.getLogger(ContractService.class);
 
-    public ContractService(ContractRepository contractRepo, CompanyRepository companyRepo) {
+    public ContractService(ContractRepository contractRepo, CompanyRepository companyRepo, ContractMapper contractMapper) {
         this.contractRepo = contractRepo;
         this.companyRepo = companyRepo;
+        this.contractMapper = contractMapper;
     }
 
     public ContractDTO saveContract(ContractDTO contractDTO) {
@@ -33,11 +35,12 @@ public class ContractService {
             throw new BusinessLogicException("End date cant be before start date");
         }
         Company company = companyRepo.findById(contractDTO.getCompanyId())
-                .orElseThrow(() -> new RuntimeException("Company not found"));
-        Contract contract = ContractMapper.toEntity(contractDTO, company);
+                .orElseThrow(() -> new BusinessLogicException("Company not found"));
+        Contract contract = contractMapper.toEntity(contractDTO);
+        contract.setCompany(company);
         Contract saved = contractRepo.save(contract);
         logger.info("Created a Contract With the ID: {} and Title: {}",saved.getId() ,saved.getTitle());
-        return ContractMapper.toDTO(saved);
+        return contractMapper.toDTO(saved);
     }
 
     public void deleteContract(Long id) {
@@ -47,25 +50,25 @@ public class ContractService {
 
     public List<ContractDTO> findAll() {
         return contractRepo.findAll().stream()
-                .map(ContractMapper::toDTO)
+                .map(contractMapper::toDTO)
                 .toList();
     }
 
     public List<ContractDTO> findByValueGreaterThan(double amount) {
         return contractRepo.findByValueGreaterThan(amount).stream()
-                .map(ContractMapper::toDTO)
+                .map(contractMapper::toDTO)
                 .toList();
     }
 
     public List<ContractDTO> findContractsExpiringIn() {
         return contractRepo.findContractsExpiringIn(LocalDate.now().plusDays(30)).stream()
-                .map(ContractMapper::toDTO)
+                .map(contractMapper::toDTO)
                 .toList();
     }
 
     public List<ContractDTO> findContractsExpiringIn(int days) {
         return contractRepo.findContractsExpiringIn(LocalDate.now().plusDays(days)).stream()
-                .map(ContractMapper::toDTO)
+                .map(contractMapper::toDTO)
                 .toList();
     }
 }
