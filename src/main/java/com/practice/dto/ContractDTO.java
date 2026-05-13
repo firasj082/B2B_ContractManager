@@ -1,19 +1,12 @@
 package com.practice.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.LocalDateTime;
 
-import java.time.LocalDate;
+public record ContractDTO (
 
-@Setter
-@Getter
-@NoArgsConstructor
-public class ContractDTO {
-
-    private String title;
-    private double value;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private Long companyId;
-}
+    String title,
+    double value,
+    LocalDateTime startDate,
+    LocalDateTime endDate,
+    Long companyId
+){}

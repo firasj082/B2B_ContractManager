@@ -1,29 +1,8 @@
 package com.practice.services;
 
 import com.practice.dto.CompanyDTO;
-import com.practice.mappers.CompanyMapper;
-import com.practice.models.Company;
-import com.practice.repositories.CompanyRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 
-@Service
-public class CompanyService {
+public interface CompanyService {
 
-    private final CompanyRepository companyRepository;
-    private final CompanyMapper companyMapper;
-    private static final Logger logger = LoggerFactory.getLogger(CompanyService.class);
-
-    public CompanyService(CompanyRepository companyRepository, CompanyMapper companyMapper) {
-        this.companyRepository = companyRepository;
-        this.companyMapper = companyMapper;
-    }
-
-    public CompanyDTO saveCompany(CompanyDTO companyDTO) {
-        Company company = companyMapper.toEntity(companyDTO);
-        Company saved = companyRepository.save(company);
-        logger.info("Company with ID: {} and Name: {} Created Successfully", saved.getId(), saved.getName());
-        return companyMapper.toDTO(saved);
-    }
+    CompanyDTO saveCompany(CompanyDTO companyDTO);
 }
