@@ -81,4 +81,11 @@ public class ContractServiceImpl implements ContractService {
     public long countContracts(){
         return contractRepo.count();
     }
+
+    @Override
+    public ContractDTO getContractById(Long id) {
+
+        return contractMapper.toDTO(contractRepo.findById(id)
+                .orElseThrow(() -> new BusinessLogicException("Contract By The Id:" + id + " Not Found")));
+    }
 }
