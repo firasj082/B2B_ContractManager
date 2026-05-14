@@ -11,3 +11,4 @@ spring.jpa.properties.hibernate.format_sql=true
 company.base.path = /companies
 contract.base.path = /contracts
 id.operations.path = /{id}
+count.operations.path = /count

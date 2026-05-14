@@ -76,4 +76,9 @@ public class ContractServiceImpl implements ContractService {
                 .map(contractMapper::toDTO)
                 .toList();
     }
+
+    @Override
+    public long countContracts(){
+        return contractRepo.count();
+    }
 }

@@ -33,8 +33,14 @@ public class ContractController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<ContractDTO>>> findAll() {
-        ApiResponse<List<ContractDTO>> response = new ApiResponse<>(true, "All Contracts Are Fetched Successfully", this.contractService.findAll());
+        ApiResponse<List<ContractDTO>> response = new ApiResponse<>(true, "All Contracts Are Fetched Successfully", contractService.findAll());
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("${count.operations.path}")
+    public ResponseEntity<ApiResponse<Long>> countContracts() {
+
+        ApiResponse<Long> response = new ApiResponse<>(true, "Number Of Contracts", contractService.countContracts());
+        return ResponseEntity.ok(response);
+    }
 }
