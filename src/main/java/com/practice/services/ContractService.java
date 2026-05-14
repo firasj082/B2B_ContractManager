@@ -12,4 +12,5 @@ public interface ContractService {
     List<ContractDTO> findContractsExpiringIn();
     List<ContractDTO> findContractsExpiringIn(int days);
     long countContracts();
+    ContractDTO getContractById(Long id);
 }

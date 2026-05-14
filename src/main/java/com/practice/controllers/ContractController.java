@@ -5,6 +5,7 @@ import com.practice.dto.ContractDTO;
 import com.practice.responses.ApiResponse;
 import com.practice.services.ContractService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class ContractController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(true, "Contract Created Successfully", created));
     }
 
-    @DeleteMapping("${id.operations.path}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteContract(@PathVariable Long id) {
         contractService.deleteContract(id);
         ApiResponse<Void> response = new ApiResponse<>(true, "Contract Deleted Successfully", null);
@@ -41,6 +42,14 @@ public class ContractController {
     public ResponseEntity<ApiResponse<Long>> countContracts() {
 
         ApiResponse<Long> response = new ApiResponse<>(true, "Number Of Contracts", contractService.countContracts());
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<ContractDTO>> getContractById(@PathVariable long id) {
+
+        ApiResponse<ContractDTO> response = new ApiResponse<>(true, "Found Contract With The Id: " + id, contractService.getContractById(id));
+
         return ResponseEntity.ok(response);
     }
 }
