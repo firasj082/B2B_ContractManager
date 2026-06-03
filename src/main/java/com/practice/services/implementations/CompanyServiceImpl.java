@@ -8,6 +8,7 @@ import com.practice.services.CompanyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -19,6 +20,7 @@ public class CompanyServiceImpl implements CompanyService {
     private final CompanyRepository companyRepository;
     private final CompanyMapper companyMapper;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public CompanyDTO saveCompany(CompanyDTO companyDTO) {
         Company company = companyMapper.toEntity(companyDTO);
