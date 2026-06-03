@@ -11,6 +11,7 @@ import com.practice.services.ContractService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -27,6 +28,7 @@ public class ContractServiceImpl implements ContractService {
     private final CompanyRepository companyRepo;
     private final ContractMapper contractMapper;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public ContractDTO saveContract(ContractDTO contractDTO) {
 
@@ -43,12 +45,14 @@ public class ContractServiceImpl implements ContractService {
         return contractMapper.toDTO(saved);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteContract(Long id) {
         contractRepo.deleteById(id);
         log.info("Contract With the ID:{} Was Deleted Successfully", id);
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @Override
     public List<ContractDTO> findAll() {
         return contractRepo.findAll().stream()
@@ -56,6 +60,7 @@ public class ContractServiceImpl implements ContractService {
                 .toList();
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @Override
     public List<ContractDTO> findByValueGreaterThan(double amount) {
         return contractRepo.findByValueGreaterThan(amount).stream()
@@ -63,6 +68,7 @@ public class ContractServiceImpl implements ContractService {
                 .toList();
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @Override
     public List<ContractDTO> findContractsExpiringIn() {
         return contractRepo.findContractsExpiringIn(LocalDateTime.now().plusDays(30)).stream()
@@ -70,6 +76,7 @@ public class ContractServiceImpl implements ContractService {
                 .toList();
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @Override
     public List<ContractDTO> findContractsExpiringIn(int days) {
         return contractRepo.findContractsExpiringIn(LocalDateTime.now().plusDays(days)).stream()
@@ -77,11 +84,13 @@ public class ContractServiceImpl implements ContractService {
                 .toList();
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @Override
     public long countContracts(){
         return contractRepo.count();
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @Override
     public ContractDTO getContractById(Long id) {
 
