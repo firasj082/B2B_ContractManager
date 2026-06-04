@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("${user.base.path}")
-public class UserController {
+@RequestMapping("${public.base.path}${user.base.path}")
+public class UserRegistrationController {
 
     private final UserService userService;
 
