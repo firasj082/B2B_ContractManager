@@ -28,11 +28,13 @@ public class User implements UserDetails {
     private String username;
     @Column(nullable = false)
     private String password;
+
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String roles;
+    private Role roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + roles));
+        return List.of(new SimpleGrantedAuthority(roles.name()));
     }
 }
