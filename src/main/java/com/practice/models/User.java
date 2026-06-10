@@ -31,10 +31,13 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role roles;
+    private Role role;
+
+    @Column(nullable = false)
+    private boolean enabled;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(roles.name()));
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 }

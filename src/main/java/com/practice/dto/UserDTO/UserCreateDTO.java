@@ -1,7 +1,10 @@
 package com.practice.dto.UserDTO;
 
+import com.practice.models.Role;
+
 public record UserCreateDTO(
         String username,
         String password,
-        String roles
+        Role role,
+        boolean enabled
 ){}

@@ -9,9 +9,9 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "Spring")
 public interface UserMapper {
 
-    @Mapping(target = "roles", source = "roles")
+    @Mapping(target = "role", source = "role")
     UserCreateDTO toCreateDTO(User user);
-    @Mapping(target = "roles", source = "roles")
+    @Mapping(target = "role", source = "role")
     UserResponseDTO toResponseDTO(User user);
     User toEntity(UserCreateDTO userCreateDTO);
 }

@@ -1,5 +1,6 @@
 package com.practice.config;
 
+import com.practice.models.Role;
 import com.practice.models.User;
 import com.practice.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,8 @@ public class DataBoot implements CommandLineRunner {
             User admin = new User();
             admin.setUsername("admin");
             admin.setPassword(passwordEncoder.encode("1234"));
-            admin.setRoles("ADMIN");
+            admin.setRole(Role.ROLE_ADMIN);
+            admin.setEnabled(true);
 
             userRepository.save(admin);
         }
@@ -31,7 +33,8 @@ public class DataBoot implements CommandLineRunner {
             User user = new User();
             user.setUsername("user");
             user.setPassword(passwordEncoder.encode("1234"));
-            user.setRoles("USER");
+            user.setRole(Role.ROLE_USER);
+            user.setEnabled(true);
 
             userRepository.save(user);
         }

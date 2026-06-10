@@ -3,6 +3,7 @@ package com.practice.services.implementations;
 import com.practice.dto.UserDTO.UserCreateDTO;
 import com.practice.dto.UserDTO.UserResponseDTO;
 import com.practice.mappers.UserMapper;
+import com.practice.models.Role;
 import com.practice.models.User;
 import com.practice.repositories.UserRepository;
 import com.practice.services.UserService;
@@ -28,8 +29,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     public UserResponseDTO saveUser(UserCreateDTO userCreateDTO) {
         User user = userMapper.toEntity(userCreateDTO);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setEnabled(true);
+        user.setRole(Role.ROLE_USER);
         User saved = userRepository.save(user);
-        log.info("User with username: {} and Role: {} Created Successfully", saved.getUsername(), saved.getRoles());
+        log.info("User with username: {} and Role: {} Created Successfully", saved.getUsername(), saved.getRole());
         return userMapper.toResponseDTO(saved);
     }
 
