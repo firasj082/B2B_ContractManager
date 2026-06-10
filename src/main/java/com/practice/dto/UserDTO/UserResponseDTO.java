@@ -1,6 +1,9 @@
 package com.practice.dto.UserDTO;
 
+import com.practice.models.Role;
+
 public record UserResponseDTO(
         String username,
-        String roles
+        Role role,
+        boolean enabled
 ) {}
