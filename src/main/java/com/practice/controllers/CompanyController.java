@@ -1,23 +1,27 @@
 package com.practice.controllers;
 
 import com.practice.dto.CompanyDTO;
+import com.practice.responses.ApiResponse;
 import com.practice.services.CompanyService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/companies")
+@RequiredArgsConstructor
+@RequestMapping("${company.base.path}")
 public class CompanyController {
 
     private final CompanyService companyService;
 
-    public CompanyController(CompanyService companyService) {this.companyService = companyService;}
-
     @PostMapping
-    public CompanyDTO saveCompany(@RequestBody CompanyDTO companyDTO) {
-
-        return companyService.saveCompany(companyDTO);
+    public ResponseEntity<ApiResponse<CompanyDTO>> saveCompany(@RequestBody CompanyDTO companyDTO) {
+        CompanyDTO saved = companyService.saveCompany(companyDTO);
+        ApiResponse<CompanyDTO> response = new ApiResponse<>(true, "The Company Is Saved Successfully", saved);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

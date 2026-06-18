@@ -1,14 +1,11 @@
 package com.practice.models;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -29,10 +26,6 @@ public class Company {
     @Column(nullable = false, unique = true)
     @Setter(AccessLevel.NONE)
     private UUID taxId;
-
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<Contract> contracts = new ArrayList<>();
 
     @PrePersist
     public void generateTaxId() {

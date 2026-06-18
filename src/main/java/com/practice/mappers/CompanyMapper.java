@@ -9,5 +9,4 @@ public interface CompanyMapper {
 
     CompanyDTO toDTO(Company company);
     Company toEntity(CompanyDTO companyDTO);
-
 }
