@@ -1,9 +1,10 @@
 package com.practice.controllers;
 
-import com.practice.dto.UserDTO.UserCreateDTO;
-import com.practice.dto.UserDTO.UserResponseDTO;
+import com.practice.dto.BasicUserDTO;
+import com.practice.dto.UserDTO;
 import com.practice.responses.ApiResponse;
 import com.practice.services.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,15 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("${public.base.path}${user.base.path}")
-public class UserRegistrationController {
+@RequestMapping("/auth")
+public class AuthController {
 
     private final UserService userService;
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<UserResponseDTO>> saveUser(@RequestBody UserCreateDTO userCreateDTO) {
-        UserResponseDTO saved = userService.saveUser(userCreateDTO);
-        ApiResponse<UserResponseDTO> response = new ApiResponse<>(true, "The user was created successfully.", saved);
+    @PostMapping("/register")
+    public ResponseEntity<ApiResponse<BasicUserDTO>> createUser(@Valid @RequestBody UserDTO userDTO) {
+        BasicUserDTO saved = userService.createUser(userDTO);
+        ApiResponse<BasicUserDTO> response = new ApiResponse<>(true, "The user was created successfully.", saved);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

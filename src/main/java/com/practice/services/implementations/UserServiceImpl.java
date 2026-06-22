@@ -1,7 +1,7 @@
 package com.practice.services.implementations;
 
-import com.practice.dto.UserDTO.UserCreateDTO;
-import com.practice.dto.UserDTO.UserResponseDTO;
+import com.practice.dto.UserDTO;
+import com.practice.dto.BasicUserDTO;
 import com.practice.mappers.UserMapper;
 import com.practice.models.Role;
 import com.practice.models.User;
@@ -9,7 +9,6 @@ import com.practice.repositories.UserRepository;
 import com.practice.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,14 +25,14 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserResponseDTO saveUser(UserCreateDTO userCreateDTO) {
-        User user = userMapper.toEntity(userCreateDTO);
+    public BasicUserDTO createUser(UserDTO userDTO) {
+        User user = userMapper.toEntity(userDTO);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEnabled(true);
         user.setRole(Role.ROLE_USER);
         User saved = userRepository.save(user);
         log.info("User with username: {} and Role: {} Created Successfully", saved.getUsername(), saved.getRole());
-        return userMapper.toResponseDTO(saved);
+        return userMapper.toDTO(saved);
     }
 
     @Override

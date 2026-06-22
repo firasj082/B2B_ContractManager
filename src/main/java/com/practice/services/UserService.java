@@ -1,9 +1,9 @@
 package com.practice.services;
 
-import com.practice.dto.UserDTO.UserCreateDTO;
-import com.practice.dto.UserDTO.UserResponseDTO;
+import com.practice.dto.UserDTO;
+import com.practice.dto.BasicUserDTO;
 
 public interface UserService {
 
-    UserResponseDTO saveUser(UserCreateDTO user);
+    BasicUserDTO createUser(UserDTO user);
 }
