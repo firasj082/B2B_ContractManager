@@ -1,6 +1,6 @@
-spring.datasource.url=jdbc:postgresql://localhost:5432/B2b_ContractManager
-spring.datasource.username=
-spring.datasource.password=
+spring.datasource.url=${spring_datasource_url:jdbc:postgresql://localhost:5432/B2b_ContractManager}
+spring.datasource.username=${spring_datasource_username:YOUR_NAME}
+spring.datasource.password=${spring_datasource_password:YOUR_PASSWORD}
 spring.datasource.driver-class-name=org.postgresql.Driver
 
 spring.jpa.hibernate.ddl-auto=update
