@@ -11,7 +11,6 @@ import com.practice.services.ContractService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,7 +27,6 @@ public class ContractServiceImpl implements ContractService {
     private final CompanyRepository companyRepo;
     private final ContractMapper contractMapper;
 
-    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public ContractDTO saveContract(ContractDTO contractDTO) {
 
@@ -45,56 +43,44 @@ public class ContractServiceImpl implements ContractService {
         return contractMapper.toDTO(saved);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteContract(Long id) {
-        contractRepo.deleteById(id);
+        Contract contract = contractRepo.findById(id)
+                        .orElseThrow(() -> new BusinessLogicException("Contract with ID: " + id + "not found"));
+        contractRepo.delete(contract);
         log.info("Contract With the ID:{} Was Deleted Successfully", id);
     }
 
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @Override
     public List<ContractDTO> findAll() {
-        return contractRepo.findAll().stream()
-                .map(contractMapper::toDTO)
-                .toList();
+        return contractMapper.toDTOList(contractRepo.findAll());
     }
 
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @Override
     public List<ContractDTO> findByValueGreaterThan(double amount) {
-        return contractRepo.findByValueGreaterThan(amount).stream()
-                .map(contractMapper::toDTO)
-                .toList();
+        List<Contract> contracts = contractRepo.findByValueGreaterThan(amount);
+        return contractMapper.toDTOList(contracts);
     }
 
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @Override
     public List<ContractDTO> findContractsExpiringIn() {
-        return contractRepo.findContractsExpiringIn(LocalDateTime.now().plusDays(30)).stream()
-                .map(contractMapper::toDTO)
-                .toList();
+        return contractMapper.toDTOList(contractRepo.findContractsExpiringIn(LocalDateTime.now().plusDays(30)));
     }
 
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @Override
     public List<ContractDTO> findContractsExpiringIn(int days) {
-        return contractRepo.findContractsExpiringIn(LocalDateTime.now().plusDays(days)).stream()
-                .map(contractMapper::toDTO)
-                .toList();
+        return contractMapper.toDTOList(contractRepo.findContractsExpiringIn(LocalDateTime.now().plusDays(days)));
     }
 
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @Override
     public long countContracts(){
         return contractRepo.count();
     }
 
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @Override
     public ContractDTO getContractById(Long id) {
-
-        return contractMapper.toDTO(contractRepo.findById(id)
-                .orElseThrow(() -> new BusinessLogicException("Contract By The Id:" + id + " Not Found")));
+        Contract contract = contractRepo.findById(id)
+                .orElseThrow(() -> new BusinessLogicException("Contract with ID: " + id + " not found"));
+        return contractMapper.toDTO(contract);
     }
 }

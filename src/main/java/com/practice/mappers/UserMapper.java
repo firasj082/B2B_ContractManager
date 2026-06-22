@@ -1,17 +1,20 @@
 package com.practice.mappers;
 
-import com.practice.dto.UserDTO.UserCreateDTO;
-import com.practice.dto.UserDTO.UserResponseDTO;
+import com.practice.dto.UserDTO;
+import com.practice.dto.BasicUserDTO;
 import com.practice.models.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "Spring")
+import java.util.List;
+
+@Mapper(componentModel = "spring")
 public interface UserMapper {
 
     @Mapping(target = "role", source = "role")
-    UserCreateDTO toCreateDTO(User user);
-    @Mapping(target = "role", source = "role")
-    UserResponseDTO toResponseDTO(User user);
-    User toEntity(UserCreateDTO userCreateDTO);
+    BasicUserDTO toDTO(User user);
+    User toEntity(UserDTO userDTO);
+
+    List<BasicUserDTO> toDTOList(List<User> users);
+    List<User> toEntityList(List<BasicUserDTO> basicUserDTOS);
 }
